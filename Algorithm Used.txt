@@ -1,0 +1,102 @@
+Tournament Scheduling
+Article by Arunachalam Y
+Published July 2002,January 2012,February 2011.
+
+WEBSITE LINK: https://nrich.maths.org/1443#:~:text=In%20a%20Round%20Robin%20tournament,is%20called%20the%20polygon%20method%20.
+
+In a Round Robin tournament every team plays every other team .
+
+There is a systematic approach to scheduling a Round Robin tournament. This method assumes that there are enough fields / pitches / courts so that all the games in a round can be played simultaneously. The technique is called the polygon method .
+
+Round Robin scheduling: Even number of teams.
+Let N = number of teams in the tournament. There will be N -1 rounds (each team will play N-1 games). Since each team will play every other team once, no team will be idle during any of the rounds.
+
+Let us schedule a round-robin tournament for 8 teams numbered from 1 to 8.
+
+Draw a regular (N -1) sided polygon (i.e., a heptagon for 8 teams). Each vertex and the centre point represents one team.
+
+A seven-sided polygon with numbers at each vertex.
+
+Draw horizontal stripes as shown below. Then, join the vertex that has been left out to the centre. Each segment represents teams playing each other in the first round.
+
+Seven-sided polygon with horizontally opposite vertices joined by lines. 
+
+So (7, 6), (1, 5), (2, 4) and (3, 8) play in the first round.
+
+Rotate the polygon 1/(N-1)th of a circle (i.e. one vertex point). The new segments represent the pairings for round two.
+
+Rotating the polygon by one point/vertex.
+
+So (6, 5), (7, 4), (1, 3) and (2, 8) play the second round.
+
+Continue rotating the polygon until it returns to its original position.
+
+All possible rotational positions of the seven-sided polygon.
+
+One more rotation will bring the polygon back to its original position.
+
+If A, B, C and D are the fields / pitches / courts, the schedule could look like this:
+
+Round	A	B	C	D
+I	7, 6	1, 5	2, 4	3, 8
+II	6, 5	7, 4	1, 3	2, 8
+III	5, 4	6, 3	7, 2	1, 8
+IV	4, 3	5, 2	6, 1	7, 8
+V	3, 2	4, 1	5, 7	6, 8
+VI	2, 1	3, 7	4, 6	5, 8
+VII	1, 7	2, 6	3, 5	4, 8
+We can also rotate the teams around so that each team plays in every field / pitch / court at least once (at present team 8 always plays in D).
+
+Round	A	B	C	D
+I	7, 6	1, 5	2, 4	3, 8
+II	6, 5	7, 4	1, 3	2, 8
+III	1, 8	6, 3	7, 2	5, 4
+IV	4, 3	5, 2	7, 8	6, 1
+V	3, 2	4, 1	5, 7	6, 8
+VI	2, 1	5, 8	4, 6	3, 7
+VII	1, 7	2, 6	3, 5	4, 8
+Round Robin scheduling: Odd number of teams.
+Let N = number of teams in the tournament. There will be N rounds (since each team will play every other team once, and will be idle for exactly one round ).
+
+Let us work out the schedule for 7 teams, numbering the teams from 1 to 7. Draw a regular N-gon (heptagon for 7 teams). Each vertex represents one team.
+
+Seven-sided polygon with numbers 1-7 at each vertext.
+Draw horizontal stripes as shown below. The vertex that has been left out gives the idle team. Each segment represents teams playing each other in the first round.
+
+Seven-sided polygon with horizontally opposite vertices joined by lines. 
+So (7, 6), (1, 5) and (2, 4) play in the first round.
+
+Rotate the polygon 1/Nth of a circle (i.e. one vertex point.) The new segments represent the pairings for round two.
+
+Rotating the polygon by one vertex point.
+Continue rotating the polygon until it returns to its original position.
+
+Continued rotation of the polygon.
+One more rotation will bring the polygon back to its original position. Therefore, the schedule could look like this:
+
+Round	A	B	C
+I	7, 6	1, 5	2, 4
+II	6, 5	7, 4	1, 3
+III	5, 4	6, 3	7, 2
+IV	4, 3	5, 2	6, 1
+V	3, 2	4, 1	5, 7
+VI	2, 1	3, 7	4, 6
+VII	1, 7	2, 6	3, 5
+Why does this work?
+The restriction that no vertex has more than one segment drawn to/from it ensures that no team is scheduled for more than one game in each round.
+
+Restricting ourselves to horizontal stripes ensures that no segment is a rotation or reflection of another segment. This means that no pairing will be repeated in a future round.
+
+Notice that in the case where N (no. of teams) was odd, by having only one idle team in each round, the tournament can be completed in the minimum number of rounds.
+
+ 
+
+Arunachalam Y. is a member of the HeyMath! team
+
+
+twitterfacebook
+AboutContact usMeet the teamSupport usOur fundersTech help
+The NRICH Project aims to enrich the mathematical experiences of all learners. To support this aim, members of the NRICH team work in a wide range of capacities, including providing professional development for teachers wishing to embed rich mathematical tasks into everyday classroom practice.
+Register for our mailing list
+Cambridge University logoCopyright © 1997 - 2020. University of Cambridge. All rights reserved.
+NRICH is part of the family of activities in the Millennium Mathematics Project.
