@@ -1,6 +1,6 @@
 function countTableRows() {
   var rowCount = 0;
-  var table = document.getElementById("myTable");
+  var table = document.getElementById("RoundRobinTable");
   var rows = table.getElementsByTagName("tr");
   //Count how many rows (regardless if empty) there are.
 
@@ -15,14 +15,17 @@ function countTableRows() {
 }
 
 function deleteLastRowOfTable() {
-  var table = document.getElementById("myTable");
+  var table = document.getElementById("RoundRobinTable");
   var rowCount = table.rows.length;
   table.deleteRow(rowCount - 1);
 }
 
+
 function addMatchToTable(player1Name, player2Name) {
+  //Pass 2 player objects who are facing each other, and the method appends it to the table.
+
   //Get table by ID and find how many rows it has.
-  var table = document.getElementById("myTable");
+  var table = document.getElementById("RoundRobinTable");
   var rowCount = countTableRows() + 1;
 
   //Create a row and insert it into the table.
@@ -41,8 +44,10 @@ function addMatchToTable(player1Name, player2Name) {
 }
 
 function addRound(numberOfRounds) {
+  //Adds a row indicating a new round has started.
   //Get table by ID and find how many rows it has.
-  var table = document.getElementById("myTable");
+
+  var table = document.getElementById("RoundRobinTable");
   var rowCount = countTableRows() + 1;
 
   //Create a row and insert it into the table.
@@ -71,192 +76,8 @@ function printArrayOfStrings(vec) {
   console.log("VECTOR : " + output);
 }
 
-function oddNumberPlayersShift(vec) {
-  //Shift array of players as needed in the oddPlayerPairingsAlgorithm();
-  var placeholder = vec[0];
-  vec.shift();
-  vec.push(placeholder);
-}
 
-function evenNumberPlayersShift(vec) {
-  //Shift array of players as needed in the evenPlayerPairingsAlgorithm();
-  var temp = vec[0];
-  vec.shift();
-  vec.splice(vec.length - 1, 0, temp);
-}
-
-function oddPlayerPairingsAlgorithm(vec) {
-  var originalPivot = vec[Math.floor(vec.length / 2)].playerName;
-
-  /*
-  We repeatedly shift the player's vector to assign pairings until all players have been the current pivot at least once.
-  This is checked by shifting the current pivot every round, and if the value of the current pivot matches the original pivot,
-  this means every player has gotten 1 round with a bye.
-
-  Example : Round 1 : [0 | 1 | (2) | 3 | 4 ];
-  2 is current pivot (and originalPivot) because it is the middle index of the array. 2 gets the bye round.
-  The array is shifted every round.
-
-  Round 2 : [1 | (2) | 3 | 4 | 0];
-  Current Pivot : 3
-  3 != 2;
-
-  Round 3: [(2) | 3 | 4 | 0 | 1];
-  Current Pivot : 4
-  4 != 2;
-
-  Round 4: [3 | 4 | 0 | 1 | (2)];
-  Current Pivot : 0
-  0 != 2;
-
-  Round 5: [4 | 0 | 1 | (2) | 3];
-  Current Pivot : 1
-  1 != 2;
-
-  Round 6: [0 | 1 | (2) | 3 | 4];
-  Current Pivot : 2
-  2 == 2;
-  break;
-
-  The algorithm does not create round 6.
-  The algorithm finishes and exits.
-  */
-  var currentPivot = (Math.floor(vec.length / 2));
-  var increment = 1;
-
-  var numberOfRounds = 0;
-  addRound(numberOfRounds);
-
-  while (1) {//Create 1st round.
-    console.log(vec[(currentPivot - increment)].playerName + " vs " + vec[(currentPivot + increment)].playerName);
-    addMatchToTable(vec[(currentPivot - increment)].playerName, (vec[(currentPivot + increment)].playerName));
-
-    if ((currentPivot - increment) == 0) {
-      //If all pairings for the first round are assigned.
-
-      addMatchToTable(vec[currentPivot].playerName, "BYE");
-      //Assign bye.
-
-      oddNumberPlayersShift(vec);
-      //Shift players to assign next rounds pairings.
-
-      increment = 1;
-      //Reset the increment.
-      console.log(vec[currentPivot] + "ADDED");
-      console.log("Increment ++");
-
-      currentPivot = Math.floor(vec.length / 2);
-      console.log("New Pivot : " + currentPivot);
-
-      numberOfRounds++;
-      addRound(numberOfRounds);
-      break;
-    }
-    else {
-      increment++;
-    }
-  }//end while loop
-
-  while (vec[currentPivot].playerName != originalPivot) {//Create every additional round.
-    addMatchToTable(vec[(currentPivot - increment)].playerName, (vec[(currentPivot + increment)].playerName));
-    //Assign pairings.
-
-    if ((Math.floor(vec.length / 2) - increment) == 0) {
-      addMatchToTable(vec[currentPivot].playerName, "BYE");
-      //Assign bye.
-
-      oddNumberPlayersShift(vec);
-      //Shift players to assign next rounds pairings.
-
-      increment = 1;
-      //Reset the increment.
-
-      currentPivot = Math.floor(vec.length / 2);
-
-      numberOfRounds++;
-      addRound(numberOfRounds);
-      //matches.push("NEW ROUND");
-    }
-    else {
-      increment++;
-    }
-  }//end while
-  
-  deleteLastRowOfTable();
-}//end evenPlayerPairings
-
-function evenPlayerPairingsAlgorithm(vec) {
-
-  printArrayOfStrings(vec);
-  var originalTop = vec[0].playerName;
-  console.log("Original Top : " + originalTop);
-
-  var topIndex = 0;
-
-  var center = [(vec.length - 1)];
-
-  var increment = 0;
-  var counter = 0;
-  var numberOfRounds = 0;
-  addRound(numberOfRounds);
-
-  while (1) {
-    console.log(vec[(topIndex + increment)].playerName + " vs " + vec[(center - increment)].playerName);
-    addMatchToTable(vec[(topIndex + increment)].playerName, vec[(center - increment)].playerName);
-
-    if (vec[topIndex + (increment + 1)] == vec[(center - increment)]) {
-      evenNumberPlayersShift(vec);
-      printArrayOfStrings(vec);
-      increment = 0;
-
-
-      topIndex = 0;
-      console.log("NEW TOP : " + vec[topIndex].playerName);
-
-      numberOfRounds++;
-      addRound(numberOfRounds);
-      console.log("LEAVING FIRST WHILE LOOP");
-      break;
-    }
-
-    else {
-      increment++;
-      counter++;
-      console.log("COUNTER: " + counter);
-    }
-  }//end while loop
-
-  while (vec[topIndex].playerName != originalTop) {
-    console.log("SECOND WHILE LOOP");
-    console.log(vec[(topIndex + increment)].playerName + " vs " + vec[(center - increment)].playerName);
-    addMatchToTable(vec[(topIndex + increment)].playerName, vec[(center - increment)].playerName);
-
-    if (vec[topIndex + (increment + 1)] == vec[(center - increment)]) {
-      console.log(vec[topIndex+(increment+1)].playerName + "==" + vec[center - increment].playerName);
-      console.log("SHIFTING");
-      evenNumberPlayersShift(vec);
-      printArrayOfStrings(vec);
-      increment = 0;
-
-
-      topIndex = 0;
-      console.log("NEW TOP INDEX : " + vec[topIndex].playerName);
-
-      numberOfRounds++;
-      addRound(numberOfRounds);
-      
-    }
-    else {
-      increment++;
-      counter++;
-      console.log("COUNTER: " + counter);
-    }
-  }//end while
-  deleteLastRowOfTable();
-}//end oddPlayerPairings
-
-function generateRoundRobinPairings() {
-  var counter;
+function makeRoundRobinPairings() {
 
   var numOfPlayers = prompt("Please enter number of players.");
   var isNum = isNumeric(numOfPlayers);
@@ -264,40 +85,109 @@ function generateRoundRobinPairings() {
     numOfPlayers = prompt("Not a valid number, try again.");
     isNum = isNumeric(numOfPlayers);
   }
-  var vec = [];
-  var newText = "";
+  
+  var players = [];
 
   for (var i = 0; i < numOfPlayers; i++) {
     var name = prompt("Player " + (i + 1) + " name?");
     var player = { playerName: name, ID: i };
-    vec.push(player);
-    newText = newText + vec[i].playerName + "/";
+    players.push(player);
   }
 
-  alert("VEC LENGTH: " + vec.length);
-  alert(vec[0].playerName);
-  printArrayOfStrings(vec);
-
-  var counter;
-  var players = vec.length;
-
-  console.log("IF PLAYERS ODD:");
-
-  if (players % 2 == 1) {
-    oddPlayerPairingsAlgorithm(vec);
+  if (players.length % 2 == 1) {
+    var player = { playerName: "BYE", ID: 0 };
+    players.push(player);
   }
 
-  else {
-    evenPlayerPairingsAlgorithm(vec);
-  }
+  const playerCount = players.length;
+  const rounds = playerCount - 1;
+  const half = playerCount / 2;
 
-  //Current algorithm adds a "Round (n)" row before checking for exist condition. So that row is just deleted.  
-}//end pairings()
+  const tournamentPairings = [];
+
+  const playerIndexes = players.map((_, i) => i).slice(1);
+
+  for (let round = 0; round < rounds; round++) {
+    const roundPairings = [];
+
+    const newPlayerIndexes = [0].concat(playerIndexes);
+
+    const firstHalf = newPlayerIndexes.slice(0, half);
+    const secondHalf = newPlayerIndexes.slice(half, playerCount).reverse();
+    addRound(round);
+
+    for (let i = 0; i < firstHalf.length; i++) {
+      addMatchToTable(players[firstHalf[i]].playerName, players[secondHalf[i]].playerName);
+      roundPairings.push({
+        white: players[firstHalf[i]],
+        black: players[secondHalf[i]],
+      });
+    }
+
+    // rotating the array
+    playerIndexes.push(playerIndexes.shift());
+    tournamentPairings.push(roundPairings);
+  }
+  return tournamentPairings;
+}
 
 function isNumeric(num){
   //Checks if number.
   console.log("NUMBER ? " + !isNaN(num));
   return !isNaN(num)
+}
+
+//All code below will be used to help implement single elimination tournament bracketing.
+
+sessionStorage.setItem("numberOfPlayers", 0);
+var int = parseInt(sessionStorage.getItem("numberOfPlayers"));
+console.log(int);
+
+function createCheckbox(player, tableIndex) { //add checkbox to page
+
+  var int = parseInt(sessionStorage.getItem("numberOfPlayers"));
+  var table = document.getElementById("SingleElimTable");
+  var rowCount = countTableRows() + 1;
+    
+  // creating checkbox element 
+  var checkbox = document.createElement('input'); 
+    
+  // Assigning the attributes 
+  // to created checkbox 
+  checkbox.type = "checkbox"; 
+  checkbox.name = player.playerName; 
+  checkbox.value = "value"; 
+  checkbox.id = player.playerName; 
+  console.log(checkbox.id);
+    
+  // creating label for checkbox 
+  var label = document.createElement('label'); 
+    
+  // assigning attributes for  
+  // the created label tag  
+  label.htmlFor = "id"; 
+    
+  // appending the created text to  
+  // the created label tag  
+  label.appendChild(document.createTextNode(player.playerName)); 
+    
+  // appending the checkbox 
+  // and label to div 
+  table.appendChild(checkbox); 
+  table.appendChild(label); 
+
+  int++;
+  sessionStorage.setItem("Players", int);
+} 
+
+function isCheckboxChecked(){//check if checkbox checked
+  var x = document.getElementById("checkbox2").checked;
+  if(x == true){
+    console.log("IT WORKS");
+  }
+  else{
+    console.log("NO");
+  }
 }
 
 function tableCreate(){
@@ -322,4 +212,104 @@ function tableCreate(){
   myDiv = document.getElementById("myDiv");
   myDiv.appendChild(tbl);
   return tbl.id;
+}
+
+function registerPlayers(){
+  var numOfPlayers = prompt("Please enter number of players.");
+  var isNum = isNumeric(numOfPlayers);
+
+  while(isNum == false){
+    numOfPlayers = prompt("Not a valid number, try again.");
+    isNum = isNumeric(numOfPlayers);
+  }
+  
+  var players = [];
+
+  for (var i = 0; i < numOfPlayers; i++) {
+    var name = prompt("Player " + (i + 1) + " name?");
+    var player = { playerName: name, ID: i };
+    players.push(player);
+  }
+
+  if (players.length % 2 == 1) {
+    var player = { playerName: "BYE", ID: 0 };
+    players.push(player);
+  }
+  return players;
+}
+
+function addSingleElimMatch(player1Name){
+  //Pass 2 player objects who are facing each other, and the method appends it to the table.
+
+  //Get table by ID and find how many rows it has.
+  var table = document.getElementById("SingleElimTable");
+  var rowCount = countTableRows() + 1;
+
+  //Create a row and insert it into the table.
+  var row = table.insertRow(rowCount);
+  
+  //Insert 3 cells into the created row.
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+
+  row.style.backgroundColor = "wheat"; 
+  row.style.color = "black";
+  //var cell3 = row.insertCell(2);
+
+
+  //Assign values to the created cells.
+
+  var tBox = document.createElement('input');
+  tBox.setAttribute('type', 'checkbox');
+
+  cell1.appendChild(tBox);
+  cell2.innerHTML = player1Name;
+}
+
+function addSpace(){
+  //Pass 2 player objects who are facing each other, and the method appends it to the table.
+
+  //Get table by ID and find how many rows it has.
+  var table = document.getElementById("SingleElimTable");
+  var rowCount = countTableRows() + 1;
+
+  //Create a row and insert it into the table.
+  var row = table.insertRow(rowCount);
+  
+  //Insert 3 cells into the created row.
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+
+  row.style.backgroundColor = "green"; 
+  row.style.color = "white";
+
+  //Assign values to the created cells.
+
+  var tBox = document.createElement('input');
+  tBox.setAttribute('type', 'checkbox');
+
+  //cell1.appendChild(tBox);
+  cell2.innerHTML = "       ";
+}
+
+function makeSingleElimPairings(){
+  var playersArray = registerPlayers();
+
+  var counter = 0;
+  for(var i = 0; i < playersArray.length; i++){
+
+    if(counter == 2){
+      counter = 0;
+
+      //Space the list
+      //var player = {playerName: "----------", ID: "0"};
+      //addSingleElimMatch(player.playerName);
+      addSpace();
+    }
+
+    addSingleElimMatch(playersArray[i].playerName);
+    counter++;
+  }
+
+  
 }

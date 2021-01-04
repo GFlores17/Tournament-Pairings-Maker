@@ -12,11 +12,12 @@
     <div id = "myDiv">
 
         <button type="button" onclick="makeRoundRobinPairings()">Create Round Robin Pairings</button>
+        <button type="button" onclick="makeSingleElimPairings()">Single Elim</button>
         <script src="myScript.js"></script>
         <br><br>
 
-        <table id="myTable" class = "center">
-            <thead>PAIRINGS</thead>
+        <table id="RoundRobinTable" class = "center">
+            <thead>ROUND ROBIN</thead>
             <tbody>
                 <tr id = "labels">
                     <th>Player 1 </th>
@@ -27,8 +28,24 @@
         </table>
         <br>
 
+        <table id="SingleElimTable" class = "center">
+            <thead>SINGLE ELIM</thead>
+            <tbody>
+                <tr id = "labels">
+                    <th>W</th>
+                    <th>Player Name</th>
+                </tr>
+            </tbody>
+        </table>
+        <br>
 
-
+    <!---
+    <button type="button" onclick="tableCreate()">Create Table</button>
+    <button type="button" onclick="geek()">Create Checkbox</button>
+    <button type="button" onclick="check()">Check Checkbox 2</button>
+    <button type="button" onclick="loadPlayerArray()">Load Tournament</button>
+    -->
+   
     </div id = "myDiv">
 
   
